@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".MainActivity">
+    <Button
+            android:text="START"
+            android:layout_width="318dp"
+            android:layout_height="154dp"
+            android:id="@+id/start" app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintVertical_bias="0.67" android:textSize="36sp"
+            app:layout_constraintHorizontal_bias="0.451"/>
+    <EditText
+            android:layout_width="309dp"
+            android:layout_height="48dp"
+            android:inputType="number"
+            android:hint="Notification interval"
+            android:ems="10"
+            android:id="@+id/length" app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/start" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintVertical_bias="0.941" app:layout_constraintHorizontal_bias="0.509"/>
+    <!-- dont judge me on this. regex is harddd ADD A MASK IF THERE IS TIME -->
+    <EditText
+            android:layout_width="310dp"
+            android:layout_height="45dp"
+            android:inputType="number"
+            android:ems="10"
+            android:hint="Phone Number (numbers only!)"
+            android:id="@+id/phone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/length" app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginBottom="16dp" app:layout_constraintHorizontal_bias="0.495"/>
+    <EditText
+            android:layout_width="310dp"
+            android:layout_height="48dp"
+            android:inputType="textPersonName"
+            android:hint="Your Message"
+            android:ems="10"
+            android:id="@+id/message" app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/phone" app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.504" app:layout_constraintVertical_bias="0.94"/>
+</android.support.constraint.ConstraintLayout>

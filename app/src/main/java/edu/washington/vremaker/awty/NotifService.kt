@@ -4,6 +4,8 @@ import android.app.IntentService
 import android.content.Intent
 import android.os.Handler
 import android.util.Log
+import android.os.Binder
+import android.os.IBinder
 import android.widget.Toast
 import android.widget.EditText
 
@@ -29,11 +31,12 @@ class NotifService: IntentService("NotifService") {
     override fun onHandleIntent(intent: Intent?) {
         Log.v(TAG, "Handling Intent")
         runNotifs = true
-        val number = 4087170338
-        val interval = 4 * 60000
+        val number = intent!!.getStringExtra("phone")
+        val interval = intent!!.getStringExtra("interval").toInt() * 60000
+        val message = intent!!.getStringExtra("message")
         while (runNotifs) {
             mHandler.post {
-                Toast.makeText(this@NotifService," " + number + ":Are We There Yet?", Toast.LENGTH_LONG).show()
+                Toast.makeText(this@NotifService," " + number + ":" + message, Toast.LENGTH_LONG).show()
             }
             try {
                 Thread.sleep(interval.toLong()) //sleep for 2 seconds
@@ -52,7 +55,8 @@ class NotifService: IntentService("NotifService") {
     override fun onDestroy() {
       Log.v(TAG, "Service finished")
         runNotifs = false
-
         super.onDestroy()
     }
+
+
 }

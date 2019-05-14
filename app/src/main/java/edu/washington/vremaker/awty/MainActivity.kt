@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
 import android.os.AsyncTask
+import android.os.Binder
 import android.os.Bundle
 import android.os.IBinder
 import android.support.v7.app.AppCompatActivity
@@ -36,6 +37,9 @@ class MainActivity : AppCompatActivity(), ServiceConnection {
                 if(msg.length() > 0 && number != null && number.length === 10 && interval.length() > 0) {
                     button.text = "STOP"
                     val intent = Intent(this@MainActivity, NotifService::class.java)
+                    intent.putExtra("message", msg.text.toString())
+                    intent.putExtra("phone", phone.text.toString())
+                    intent.putExtra("interval", interval.text.toString())
                     startService(intent)
                 } else {
                     Toast.makeText(this@MainActivity, "You have not filled in all of the fields correctly. " +
@@ -48,13 +52,13 @@ class MainActivity : AppCompatActivity(), ServiceConnection {
         }
     }
 
+
     override fun onServiceDisconnected(name: ComponentName?) {
         Log.e("O", "service disconnected")
     }
 
     override fun onServiceConnected(name: ComponentName, service: IBinder) {
         Log.e("MainActivity", "service connected")
-
     }
 
 }

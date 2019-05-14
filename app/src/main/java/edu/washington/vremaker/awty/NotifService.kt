@@ -5,16 +5,18 @@ import android.content.Intent
 import android.os.Handler
 import android.util.Log
 import android.widget.Toast
+import android.widget.EditText
 
 
 class NotifService: IntentService("NotifService") {
 
     val TAG = "NotifService"
     private lateinit var mHandler: Handler
-    var count = 0
+    var runNotifs = false
 
     override fun onCreate() {
         Log.v(TAG, "Service started")
+
         mHandler = Handler()
         super.onCreate()
     }
@@ -26,25 +28,18 @@ class NotifService: IntentService("NotifService") {
 
     override fun onHandleIntent(intent: Intent?) {
         Log.v(TAG, "Handling Intent")
-        count = 1
-        while (count <= 10) {
-            Log.v(TAG, "Count: $count")
+        runNotifs = true
+        val number = 4087170338
+        val interval = 4 * 60000
+        while (runNotifs) {
             mHandler.post {
-                Toast.makeText(this@NotifService, "Count: $count", Toast.LENGTH_SHORT).show()
-                Log.v(TAG, "" + count)
+                Toast.makeText(this@NotifService," " + number + ":Are We There Yet?", Toast.LENGTH_LONG).show()
             }
-
-            if (count == 5) {
-                stopSelf()
-            }
-
             try {
-                Thread.sleep(2000) //sleep for 2 seconds
+                Thread.sleep(interval.toLong()) //sleep for 2 seconds
             } catch (e: InterruptedException) {
                 Thread.currentThread().interrupt()
             }
-
-            count++
         }
     }
 
@@ -56,7 +51,7 @@ class NotifService: IntentService("NotifService") {
 
     override fun onDestroy() {
       Log.v(TAG, "Service finished")
-        count = 11 //stop counting
+        runNotifs = false
 
         super.onDestroy()
     }

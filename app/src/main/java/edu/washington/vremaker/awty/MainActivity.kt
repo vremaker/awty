@@ -19,8 +19,8 @@ import android.widget.EditText
 import android.widget.Button
 
 class MainActivity : AppCompatActivity(), ServiceConnection {
-    private lateinit var mService: NotifService
-    private var mServiceBound: Boolean = false
+    private lateinit var nService: NotifService
+    private var nServiceBound: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,11 +36,10 @@ class MainActivity : AppCompatActivity(), ServiceConnection {
                 if(msg.length() > 0 && number != null && number.length === 10 && interval.length() > 0) {
                     button.text = "STOP"
                     val intent = Intent(this@MainActivity, NotifService::class.java)
-                    intent.putExtra("number", number.toString())
-                    intent.putExtra("message", msg.text.toString())
-                    intent.putExtra("interval", interval.text.toString())
                     startService(intent)
-                    //add the interval service
+                } else {
+                    Toast.makeText(this@MainActivity, "You have not filled in all of the fields correctly. " +
+                            "please try again. Reminder, the phone number is 10 digits with in () or -", Toast.LENGTH_LONG).show()
                 }
             } else { // if button = STOP
                 button.text = "START"
@@ -48,12 +47,14 @@ class MainActivity : AppCompatActivity(), ServiceConnection {
             }
         }
     }
+
     override fun onServiceDisconnected(name: ComponentName?) {
         Log.e("O", "service disconnected")
     }
 
     override fun onServiceConnected(name: ComponentName, service: IBinder) {
-        Log.e("O", "service connected")
+        Log.e("MainActivity", "service connected")
+
     }
 
 }

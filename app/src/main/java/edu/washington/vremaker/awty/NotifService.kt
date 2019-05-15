@@ -8,6 +8,11 @@ import android.os.Binder
 import android.os.IBinder
 import android.widget.Toast
 import android.widget.EditText
+import android.R
+import android.widget.LinearLayout
+import android.view.Gravity
+
+
 
 
 class NotifService: IntentService("NotifService") {
@@ -36,7 +41,10 @@ class NotifService: IntentService("NotifService") {
         val message = intent!!.getStringExtra("message")
         while (runNotifs) {
             mHandler.post {
-                Toast.makeText(this@NotifService," " + number + ":" + message, Toast.LENGTH_LONG).show()
+                var toast = Toast.makeText(this@NotifService," " + getPhone(number) + ":" + message, Toast.LENGTH_LONG);
+                toast.setGravity(Gravity.CENTER, 0, 0)
+                val toastContentView = toast.getView() as LinearLayout
+                toast.show()
             }
             try {
                 Thread.sleep(interval.toLong()) //sleep for 2 seconds

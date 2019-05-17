@@ -4,18 +4,20 @@ import android.app.IntentService
 import android.content.Intent
 import android.os.Handler
 import android.util.Log
-import android.os.Binder
-import android.os.IBinder
 import android.widget.Toast
-import android.widget.EditText
+import android.net.Uri
 import android.R
 import android.widget.LinearLayout
+import android.telephony.SmsManager
 import android.view.Gravity
 
 
 
-
 class NotifService: IntentService("NotifService") {
+
+    companion object {
+        val REQUEST_SMS_SEND_PERMISSION = 1234
+    }
 
     val TAG = "NotifService"
     private lateinit var mHandler: Handler
@@ -36,16 +38,15 @@ class NotifService: IntentService("NotifService") {
     override fun onHandleIntent(intent: Intent?) {
         Log.v(TAG, "Handling Intent")
         runNotifs = true
-        val number = intent!!.getStringExtra("phone")
+        val number = intent!!.getStringExtra("phone").toString()
+        val uri = Uri.parse("smsto:$number")
         val interval = intent!!.getStringExtra("interval").toInt() * 60000
-        val message = intent!!.getStringExtra("message")
+        val message = intent!!.getStringExtra("message").toString()
         while (runNotifs) {
             mHandler.post {
-                var toast = Toast.makeText(this@NotifService," " + getPhone(number) + ":" + message, Toast.LENGTH_LONG);
-                toast.setGravity(Gravity.CENTER, 0, 0)
-                val toastContentView = toast.getView() as LinearLayout
-                toast.show()
-            }
+                val smgr = SmsManager.getDefault()
+                smgr.sendTextMessage(number, null, message, null, null)
+                }
             try {
                 Thread.sleep(interval.toLong()) //sleep for 2 seconds
             } catch (e: InterruptedException) {
@@ -53,7 +54,6 @@ class NotifService: IntentService("NotifService") {
             }
         }
     }
-
 
     fun getPhone(phone: String): String {
         val newPhone = "(" + phone.substring(0,3) + ") " + phone.substring(3,6) + "-" + phone.substring(6)
@@ -65,6 +65,5 @@ class NotifService: IntentService("NotifService") {
         runNotifs = false
         super.onDestroy()
     }
-
 
 }
